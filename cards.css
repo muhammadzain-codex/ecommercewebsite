@@ -1,0 +1,86 @@
+.card-container {
+	position: relative;
+	overflow: hidden;
+	height: auto;
+	margin-bottom: 20px;
+  }
+
+  .card-container img {
+	width: 100%;
+	height: 300px;
+	object-fit: cover;
+  }
+
+  .hover-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.6);
+	color: white;
+	text-align: center;
+	transform: translateY(100%);
+	transition: transform 0.3s ease;
+  }
+
+  .card-container:hover .hover-content {
+	transform: translateY(0);
+  }
+
+  /* Icon Container */
+  .shoppingcart {
+	position: absolute;
+	bottom: 50px; /* Adjust to avoid overlapping with button */
+	right: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+  }
+
+  .card-container:hover .shoppingcart {
+	opacity: 1;
+  }
+
+  /* Icons */
+  .shoppingcart .icon {
+	font-size: 20px;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.6);
+	padding: 10px;
+	border-radius: 50%; /* Ensuring the icons are inside circles */
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+  }
+
+  /* Hover effect for icons */
+  .shoppingcart .icon:hover {
+	background-color: rgba(255, 165, 0, 0.8); /* Orange hover */
+  }
+
+  .btn-hover {
+	width: 100%;
+	border-radius: 0;
+	color: white;
+	background-color: orange;
+	transition: background-color 0.3s ease;
+  }
+
+  .btn-hover:hover {
+	background-color: darkorange;
+  }
+
+  .product-details {
+	text-align: center;
+	margin-top: 10px;
+  }
+
+  .product-details .price {
+	color: grey;
+	text-decoration: line-through;
+  }
+
+  .product-details .new-price {
+	color: #ff5733;
+  }

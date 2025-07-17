@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #ff6600;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e65c00;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Register</h2>
+  <form id="registrationForm">
+    <input type="text" id="name" placeholder="Full Name" >
+    <div class="error" id="nameError"></div>
+
+    <input type="email" id="email" placeholder="Email" >
+    <div class="error" id="emailError"></div>
+
+    <input type="password" id="password" placeholder="Password" >
+    <div class="error" id="passwordError"></div>
+
+    <input type="password" id="confirmPassword" placeholder="Confirm Password" >
+    <div class="error" id="confirmPasswordError"></div>
+
+    <input type="text" id="phone" placeholder="Phone Number" >
+    <div class="error" id="phoneError"></div>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<script>
+    const form = document.getElementById('registrationForm');
+  
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+  
+      // Reset errors
+      document.getElementById("nameError").innerText = "";
+      document.getElementById("emailError").innerText = "";
+      document.getElementById("passwordError").innerText = "";
+      document.getElementById("confirmPasswordError").innerText = "";
+      document.getElementById("phoneError").innerText = "";
+  
+      let valid = true;
+  
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const phone = document.getElementById("phone").value.trim();
+  
+      const namePattern = /^[A-Za-z\s]+$/;
+if (!namePattern.test(name) || /\d/.test(name)) {
+  document.getElementById("nameError").innerText = "Name must contain only letters (no numbers).";
+  valid = false;
+}
+
+  
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById("emailError").innerText = "Enter a valid email.";
+        valid = false;
+      }
+  
+      if (password.length < 6) {
+        document.getElementById("passwordError").innerText = "Password must be at least 6 characters.";
+        valid = false;
+      }
+  
+      if (password !== confirmPassword) {
+        document.getElementById("confirmPasswordError").innerText = "Passwords do not match.";
+        valid = false;
+      }
+  
+      const phonePattern = /^[0-9]+$/;
+      if (!phonePattern.test(phone)) {
+        document.getElementById("phoneError").innerText = "Phone number must contain only digits.";
+        valid = false;
+      }
+  
+      if (valid) {
+        alert("Registration successful!");
+        form.reset();
+      }
+    });
+  </script>
+  
+
+</body>
+</html>

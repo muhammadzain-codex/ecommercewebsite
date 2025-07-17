@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Signup Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #f5a623, #f76b1c);
+      animation: gradientBG 10s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .form-container {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 420px;
+      animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 8px;
+      background: #f2f2f2;
+      transition: 0.3s ease;
+    }
+
+    input:focus {
+      background: #e6e6e6;
+      outline: none;
+    }
+
+    .password-strength {
+      height: 10px;
+      border-radius: 5px;
+      margin-top: 5px;
+      transition: all 0.5s ease;
+    }
+
+    .strength-text {
+      font-size: 0.9em;
+      margin-top: 5px;
+      transition: color 0.3s ease;
+      font-weight: bold;
+    }
+
+    .weak { background: red; width: 33%; }
+    .medium { background: orange; width: 66%; }
+    .strong { background: green; width: 100%; }
+
+    button {
+      padding: 12px;
+      background: #ff6600;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background: #e65c00;
+      transform: scale(1.03);
+    }
+
+    .error {
+      color: red;
+      font-size: 0.85em;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form id="signupForm">
+      <input type="text" id="firstName" placeholder="First Name">
+      <input type="text" id="lastName" placeholder="Last Name">
+      <input type="text" id="username" placeholder="Username">
+      <input type="email" id="email" placeholder="Email">
+      <input type="date" id="dob">
+      <input type="password" id="password" placeholder="Password">
+      <div class="password-strength" id="passwordStrength"></div>
+      <div class="strength-text" id="strengthText"></div>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      <div class="error" id="errorMessage"></div>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+ 
+  <script>
+    const form = document.getElementById('signupForm');
+    const password = document.getElementById('password');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const strengthText = document.getElementById('strengthText');
+    const errorMessage = document.getElementById('errorMessage');
+  
+    // Password Strength Logic
+    password.addEventListener('input', () => {
+      const val = password.value;
+      let strength = 0;
+      if (val.length >= 6) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^A-Za-z0-9]/.test(val)) strength++;
+  
+      passwordStrength.className = 'password-strength'; // reset
+      strengthText.textContent = '';
+  
+      if (val.length === 0) {
+        passwordStrength.style.width = '0';
+        strengthText.textContent = '';
+      } else if (strength <= 1) {
+        passwordStrength.classList.add('weak');
+        strengthText.textContent = 'Weak';
+        strengthText.style.color = 'red';
+      } else if (strength === 2 || strength === 3) {
+        passwordStrength.classList.add('medium');
+        strengthText.textContent = 'Medium';
+        strengthText.style.color = 'orange';
+      } else {
+        passwordStrength.classList.add('strong');
+        strengthText.textContent = 'Strong';
+        strengthText.style.color = 'green';
+      }
+    });
+  
+    // Form Submission Validation
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errorMessage.textContent = '';
+  
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const dob = document.getElementById('dob').value.trim();
+      const pass = document.getElementById('password').value;
+      const confirmPass = document.getElementById('confirmPassword').value;
+  
+      const nameRegex = /^[A-Za-z]+$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+      if (!firstName || !lastName || !username || !email || !dob || !pass || !confirmPass) {
+        errorMessage.textContent = 'Please fill in all fields.';
+      } else if (!nameRegex.test(firstName)) {
+        errorMessage.textContent = 'First name must contain only letters.';
+      } else if (!nameRegex.test(lastName)) {
+        errorMessage.textContent = 'Last name must contain only letters.';
+      } else if (!emailRegex.test(email)) {
+        errorMessage.textContent = 'Please enter a valid email address.';
+      } else if (pass !== confirmPass) {
+        errorMessage.textContent = 'Passwords do not match.';
+      } else {
+        alert('Form submitted successfully!');
+        form.reset();
+        passwordStrength.className = 'password-strength';
+        passwordStrength.style.width = '0';
+        strengthText.textContent = '';
+      }
+    });
+  </script>
+  
+</body>
+</html>

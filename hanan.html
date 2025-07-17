@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .password-strength {
+      height: 8px;
+      border-radius: 5px;
+      margin-top: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .strength-text {
+      font-size: 0.9em;
+      margin-top: 5px;
+      transition: color 0.3s ease;
+    }
+
+    .weak { background: red; width: 33%; }
+    .medium { background: orange; width: 66%; }
+    .strong { background: green; width: 100%; }
+
+    button {
+      padding: 10px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form id="signupForm">
+      <input type="text" id="firstName" placeholder="First Name">
+      <input type="text" id="lastName" placeholder="Last Name">
+      <input type="text" id="username" placeholder="Username">
+      <input type="email" id="email" placeholder="Email">
+      <input type="date" id="dob">
+      <input type="password" id="password" placeholder="Password">
+      <div class="password-strength" id="passwordStrength"></div>
+      <div class="strength-text" id="strengthText"></div>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      <div class="error" id="errorMessage"></div>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const password = document.getElementById('password');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const strengthText = document.getElementById('strengthText');
+    const errorMessage = document.getElementById('errorMessage');
+
+    password.addEventListener('input', () => {
+      const val = password.value;
+      let strength = 0;
+      if (val.length >= 6) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+      passwordStrength.className = 'password-strength';
+      strengthText.textContent = '';
+
+      if (val.length === 0) {
+        passwordStrength.style.width = '0';
+        strengthText.textContent = '';
+      } else if (strength <= 1) {
+        passwordStrength.classList.add('weak');
+        strengthText.textContent = 'Weak';
+        strengthText.style.color = 'red';
+      } else if (strength === 2 || strength === 3) {
+        passwordStrength.classList.add('medium');
+        strengthText.textContent = 'Medium';
+        strengthText.style.color = 'orange';
+      } else {
+        passwordStrength.classList.add('strong');
+        strengthText.textContent = 'Strong';
+        strengthText.style.color = 'green';
+      }
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      errorMessage.textContent = '';
+
+      const fields = ['firstName', 'lastName', 'username', 'email', 'dob', 'password', 'confirmPassword'];
+      let isValid = true;
+
+      fields.forEach(id => {
+        const value = document.getElementById(id).value.trim();
+        if (!value) {
+          isValid = false;
+        }
+      });
+
+      const emailValue = document.getElementById('email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!isValid) {
+        errorMessage.textContent = 'Please fill in all fields.';
+      } else if (!emailRegex.test(emailValue)) {
+        errorMessage.textContent = 'Please enter a valid email address.';
+      } else if (document.getElementById('password').value !== document.getElementById('confirmPassword').value) {
+        errorMessage.textContent = 'Passwords do not match.';
+      } else {
+        alert('Form submitted successfully!');
+        form.reset();
+        passwordStrength.style.width = '0';
+        strengthText.textContent = '';
+      }
+    });
+  </script>
+</body>
+</html>
